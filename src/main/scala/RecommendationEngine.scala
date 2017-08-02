@@ -1,7 +1,7 @@
 import io.prediction.controller.EngineFactory
 import io.prediction.controller.Engine
 
-case class Query(userId: String, numResults: Int)
+case class Query(userId: String, numResults: 3)
 
 case class PredictedResult(propertyRatings: Map[String, Double])
 
