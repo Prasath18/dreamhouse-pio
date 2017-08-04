@@ -55,9 +55,8 @@ class Algorithm(val params: AlgorithmParams) extends PAlgorithm[PreparedData, Mo
 
   def predict(model: Model, query: Query): PredictedResult = {
     val userIdInt = model.userStringIntMap(query.userId)
-
-    val ratings = model.model.recommendProducts(userIdInt, query.numResults)
-
+    val blackList = query.blackList.flatMap(model.itemStringIntMap.get) // ADDED
+    val ratings = model.model.recommendProducts(userIdInt, query.numResults,blackList) // MODIFIED
     val propertyRatings = ratings.map { rating =>
       model.itemStringIntMap.inverse(rating.product) -> rating.rating
     }
