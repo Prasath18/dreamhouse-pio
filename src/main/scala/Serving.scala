@@ -5,8 +5,8 @@ class Serving extends LServing[Query, PredictedResult] {
 
   override def serve(query: Query, predictedResults: Seq[PredictedResult]): PredictedResult = {
     predictedResults.head
-    
-     def recommendProductsWithFilter(user: Int, num: Int, productIdFilter: Set[Int]) = {
+  }
+  def recommendProductsWithFilter(user: Int, num: Int, productIdFilter: Set[Int]) = {
     val filteredProductFeatures = productFeatures
       .filter { case (id, _) => !productIdFilter.contains(id) } // (*)
     recommend(userFeatures.lookup(user).head, filteredProductFeatures, num)
@@ -21,7 +21,5 @@ class Serving extends LServing[Query, PredictedResult] {
       (id, blas.ddot(features.length, recommendToFeatures, 1, features, 1))
     }
     scored.top(num)(Ordering.by(_._2))
-  }
-    
-  }
+    }
 }
