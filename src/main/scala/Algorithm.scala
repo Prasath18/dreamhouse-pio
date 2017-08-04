@@ -55,6 +55,10 @@ class Algorithm(val params: AlgorithmParams) extends PAlgorithm[PreparedData, Mo
 
   def predict(model: Model, query: Query): PredictedResult = {
     val userIdInt = model.userStringIntMap(query.userId)
+    // create inverse view of itemStringIntMap
+      val itemIntStringMap = model.itemStringIntMap.inverse
+      // recommendProductsWithFilter() returns Array[MLlibRating], which uses item Int
+      // index. Convert it to String ID for returning PredictedResult
     val blackList = query.blackList.flatMap(model.itemStringIntMap.get) // ADDED
     val ratings = model.model.recommendProducts(userIdInt, query.numResults,blackList) // MODIFIED
     val propertyRatings = ratings.map { rating =>
